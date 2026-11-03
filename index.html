@@ -1,48 +1,231 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Online Exam</title>
+  <title>Online Exam Portal</title>
+
   <style>
-    body { font-family: Arial; background: lightblue; }
-    .box { width: 450px; max-width: 90%; margin: 30px auto; padding: 20px; background: white; }
-    input[type=text], input[type=password] { width: 95%; padding: 8px; margin: 6px 0; }
-    button { width: 100%; padding: 10px; background: blue; color: white; border: none; }
-    .top { display: flex; justify-content: space-between; background: blue; color: white; padding: 8px; }
-    label { display: block; }
-    .hidden { display: none; }
-    h1, h2 { text-align: center; }
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .box {
+      width: 550px;
+      max-width: 100%;
+      padding: 35px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      animation: appear 0.5s ease;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e293b;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input[type=text],
+    input[type=password] {
+      width: 100%;
+      padding: 13px;
+      margin: 10px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 6px rgba(37,99,235,0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 18px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(37,99,235,0.3);
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    #timer {
+      color: #dc2626;
+      font-size: 20px;
+    }
+
+    #questions p {
+      background: #f1f5f9;
+      padding: 13px;
+      border-left: 4px solid #2563eb;
+      border-radius: 6px;
+      color: #1e293b;
+      margin-top: 22px;
+    }
+
+    label {
+      display: block;
+      padding: 10px 12px;
+      margin: 7px 0;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    label:hover {
+      background: #eff6ff;
+      border-color: #2563eb;
+    }
+
+    input[type=radio] {
+      margin-right: 9px;
+      accent-color: #2563eb;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #error {
+      color: #dc2626;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    #resultPage h1 {
+      color: #2563eb;
+    }
+
+    #score {
+      color: #1e293b;
+      background: #eff6ff;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    #status {
+      padding: 12px;
+      border-radius: 8px;
+      color: white;
+      background: #16a34a;
+    }
+
+    @media (max-width: 600px) {
+      .box {
+        padding: 22px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .top {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
+
 <body>
 
-  <!-- PART 1: LOGIN PAGE -->
+  <!-- LOGIN PAGE -->
   <div id="loginPage" class="box">
     <h1>Student Login</h1>
-    <input type="text" id="user" placeholder="Username">
-    <input type="password" id="pass" placeholder="Password">
-    <p id="error" style="color:red"></p>
-    <button onclick="login()">Login</button>
-    <p>Use: student1 / 1234</p>
+
+    <input type="text" id="user" placeholder="Enter Username">
+    <input type="password" id="pass" placeholder="Enter Password">
+
+    <p id="error"></p>
+
+    <button onclick="login()">Login to Exam</button>
+
+    <p style="text-align:center;color:#64748b;">
+      Demo Login: student1 / 1234
+    </p>
   </div>
 
-  <!-- PART 2 and 3: QUESTIONS AND TIMER -->
+  <!-- EXAM PAGE -->
   <div id="examPage" class="box hidden">
+
+    <h1>Online Examination</h1>
+
     <div class="top">
-      <span>Time left: <b id="timer"></b></span>
+      <span>Time Remaining</span>
+      <b id="timer">3:00</b>
     </div>
+
     <div id="questions"></div>
-    <button onclick="submitExam()">Submit</button>
+
+    <button onclick="submitExam()">Submit Exam</button>
   </div>
 
-  <!-- PART 4: RESULT PAGE -->
+  <!-- RESULT PAGE -->
   <div id="resultPage" class="box hidden">
-    <h1>Result</h1>
+
+    <h1>Exam Result</h1>
+
     <h2 id="score"></h2>
+
     <h2 id="status"></h2>
+
   </div>
 
 <script>
-  // ----- Questions: q = question, options = choices, answer = correct option number (starts from 0) -----
+
   var questions = [
     { q: "Which language is used to create web pages?", options: ["CSS", "HTML", "Java", "SQL"], answer: 1 },
     { q: "Which language is used to style web pages?", options: ["CSS", "HTML", "Python", "C"], answer: 0 },
@@ -51,67 +234,100 @@
     { q: "Which method starts a Java program?", options: ["start()", "main()", "run()", "init()"], answer: 1 }
   ];
 
-  var timeLeft = 180;   // 3 minutes = 180 seconds
+  var timeLeft = 180;
   var timerId;
 
-  // ----- PART 1: Login -----
   function login() {
+
     var u = document.getElementById("user").value;
     var p = document.getElementById("pass").value;
 
     if (u === "student1" && p === "1234") {
+
       document.getElementById("loginPage").classList.add("hidden");
       document.getElementById("examPage").classList.remove("hidden");
+
       showQuestions();
       startTimer();
+
     } else {
-      document.getElementById("error").textContent = "Wrong username or password";
+
+      document.getElementById("error").textContent =
+        "Wrong username or password";
+
     }
   }
 
-  // ----- PART 2: Show questions with options -----
   function showQuestions() {
+
     var html = "";
+
     for (var i = 0; i < questions.length; i++) {
-      html += "<p><b>" + (i + 1) + ". " + questions[i].q + "</b></p>";
+
+      html += "<p><b>" + (i + 1) + ". " +
+        questions[i].q + "</b></p>";
+
       for (var j = 0; j < questions[i].options.length; j++) {
-        html += "<label><input type='radio' name='q" + i + "' value='" + j + "'> " + questions[i].options[j] + "</label>";
+
+        html += "<label><input type='radio' name='q" +
+          i + "' value='" + j + "'> " +
+          questions[i].options[j] + "</label>";
+
       }
     }
+
     document.getElementById("questions").innerHTML = html;
   }
 
-  // ----- PART 3: Timer -----
   function startTimer() {
+
     timerId = setInterval(function () {
-      timeLeft = timeLeft - 1;
+
+      timeLeft--;
+
       var min = Math.floor(timeLeft / 60);
       var sec = timeLeft % 60;
-      document.getElementById("timer").textContent = min + ":" + (sec < 10 ? "0" : "") + sec;
+
+      document.getElementById("timer").textContent =
+        min + ":" + (sec < 10 ? "0" : "") + sec;
 
       if (timeLeft <= 0) {
-        submitExam();   // time over, submit automatically
+        submitExam();
       }
+
     }, 1000);
   }
 
-  // ----- PART 4: Submit and calculate the result -----
   function submitExam() {
+
     clearInterval(timerId);
+
     var score = 0;
 
     for (var i = 0; i < questions.length; i++) {
-      var chosen = document.querySelector("input[name='q" + i + "']:checked");
+
+      var chosen = document.querySelector(
+        "input[name='q" + i + "']:checked"
+      );
+
       if (chosen && Number(chosen.value) === questions[i].answer) {
-        score = score + 1;
+        score++;
       }
     }
 
     document.getElementById("examPage").classList.add("hidden");
     document.getElementById("resultPage").classList.remove("hidden");
-    document.getElementById("score").textContent = "Score: " + score + " / " + questions.length;
-    document.getElementById("status").textContent = score >= 3 ? "PASS" : "FAIL";
+
+    document.getElementById("score").textContent =
+      "Score: " + score + " / " + questions.length;
+
+    var status = document.getElementById("status");
+
+    status.textContent = score >= 3 ? "PASS" : "FAIL";
+
+    status.style.background = score >= 3 ? "#16a34a" : "#dc2626";
   }
+
 </script>
 
 </body>
